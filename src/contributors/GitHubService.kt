@@ -16,15 +16,15 @@ import java.util.Base64
 
 interface GitHubService {
     @GET("orgs/{org}/repos?per_page=100")
-    fun getOrgReposCall(
+    suspend fun getOrgReposCall(
         @Path("org") org: String
-    ): Call<List<Repo>>
+    ): Response<List<Repo>>
 
     @GET("repos/{owner}/{repo}/contributors?per_page=100")
-    fun getRepoContributorsCall(
+    suspend fun getRepoContributorsCall(
         @Path("owner") owner: String,
         @Path("repo") repo: String
-    ): Call<List<User>>
+    ): Response<List<User>>
 }
 
 @Serializable

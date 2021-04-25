@@ -7,24 +7,24 @@ import retrofit2.Response
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
-fun loadContributorsCallbacks(service: GitHubService, req: RequestData, updateResults: (List<User>) -> Unit) {
-    service.getOrgReposCall(req.org).onResponse { responseRepos ->
-        logRepos(req, responseRepos)
-        val repos = responseRepos.bodyList()
-        val allUsers = Collections.synchronizedList(mutableListOf<User>())
-        val numberOfProcessed = AtomicInteger()
-        for (repo in repos) {
-            service.getRepoContributorsCall(req.org, repo.name).onResponse { responseUsers ->
-                logUsers(repo, responseUsers)
-                val users = responseUsers.bodyList()
-                allUsers += users
-                if (numberOfProcessed.incrementAndGet() == repos.size) {
-                    updateResults(allUsers.aggregate())
-                }
-            }
-        }
-    }
-}
+//fun loadContributorsCallbacks(service: GitHubService, req: RequestData, updateResults: (List<User>) -> Unit) {
+//    service.getOrgReposCall(req.org).onResponse { responseRepos ->
+//        logRepos(req, responseRepos)
+//        val repos = responseRepos.bodyList()
+//        val allUsers = Collections.synchronizedList(mutableListOf<User>())
+//        val numberOfProcessed = AtomicInteger()
+//        for (repo in repos) {
+//            service.getRepoContributorsCall(req.org, repo.name).onResponse { responseUsers ->
+//                logUsers(repo, responseUsers)
+//                val users = responseUsers.bodyList()
+//                allUsers += users
+//                if (numberOfProcessed.incrementAndGet() == repos.size) {
+//                    updateResults(allUsers.aggregate())
+//                }
+//            }
+//        }
+//    }
+//}
 
 inline fun <T> Call<T>.onResponse(crossinline callback: (Response<T>) -> Unit) {
     enqueue(object : Callback<T> {
