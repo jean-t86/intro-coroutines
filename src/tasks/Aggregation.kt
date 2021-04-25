@@ -3,8 +3,6 @@ package tasks
 import contributors.User
 
 /*
-TODO: Write aggregation code.
-
  In the initial list each user is present several times, once for each
  repository he or she contributed to.
  Merge duplications: each user should be present only once in the resulting list
@@ -15,4 +13,12 @@ TODO: Write aggregation code.
  You can use 'Navigate | Test' menu action (note the shortcut) to navigate to the test.
 */
 fun List<User>.aggregate(): List<User> =
-    this
+    this.groupBy { it.login }
+        .map { pairEntry ->
+            val (login, listOfUsers) = pairEntry
+            val totalContributions = listOfUsers.sumBy {
+                it.contributions
+            }
+            User(login, totalContributions)
+        }
+        .sortedByDescending { it.contributions }
